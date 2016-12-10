@@ -127,7 +127,7 @@ function GetTerminatedAgreementsFor(req,res,intent) {
 		  send_alexa_error(res,'An error occured in fetching Terminated Agreements for account '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, accountName + ' has ' + result + ' Terminated Agreements', 'APTTUS', '...', 'TerminatedAgreementsFor ', false);
+		  send_alexa_response(res, accountName + ' has ' + result + ' Terminated Agreement for today', 'APTTUS', '...', 'TerminatedAgreementsFor ', false);
 		}
 	});
 }
