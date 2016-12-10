@@ -59,10 +59,10 @@ sfdc_amazon.addRoutes(app,oauth_timeout,true);
 var intent_functions = new Array();
 intent_functions['PleaseWait'] = PleaseWait;
 intent_functions['CreateFavoriteQuote'] = CreateFavoriteQuotes;
-intent_functions['GetExpiredAgreements'] = GetExpiredAgreements;
-intent_functions['GetExpiredAgreementsOnToday'] = GetExpiredAgreementsOnToday;
-intent_functions['GetExpiredAgreementsFor'] = GetExpiredAgreementsFor;
-intent_functions['GetExpiredAgreementDetails'] = GetExpiredAgreementDetails;
+intent_functions['GetTerminatedAgreements'] = GetTerminatedAgreements;
+intent_functions['GetTerminatedAgreementsOnToday'] = GetTerminatedAgreementsOnToday;
+intent_functions['GetTerminatedAgreementsFor'] = GetTerminatedAgreementsFor;
+intent_functions['GetTerminatedAgreementDetails'] = GetTerminatedAgreementDetails;
 
 function CreateFavoriteQuotes(req, res, intent) {	
 	console.log("intent " + intent.slots);
@@ -85,68 +85,68 @@ function PleaseWait(req,res,intent) {
   send_alexa_response(res, 'Waiting', 'APTTUS', '...', 'Waiting', false);
 }
 
-function GetExpiredAgreements(req,res,intent) {
-  console.log('GetExpiredAgreements called ');
-	org.apexRest({oauth:intent.oauth, uri:'GetExpiredAgreements',method:'GET'}, 
+function GetTerminatedAgreements(req,res,intent) {
+  console.log('GetTerminatedAgreements called ');
+	org.apexRest({oauth:intent.oauth, uri:'GetTerminatedAgreements',method:'GET'}, 
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured getting number of expired agreement: '+err);
+		  send_alexa_error(res,'An error occured getting number of Terminated agreement: '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, 'Number of expired agreements are '+ result, 'APTTUS', '...', 'ExpiredAgreements', false);
+		  send_alexa_response(res, 'Number of Terminated agreements are '+ result, 'APTTUS', '...', 'TerminatedAgreements', false);
 		}
 	});
 }
 
-function GetExpiredAgreementsOnToday(req,res,intent) {
-  console.log('GetExpiredAgreementsOnToday called ');
-	org.apexRest({oauth:intent.oauth, uri:'GetExpiredAgreementsOnToday',method:'GET'}, 
+function GetTerminatedAgreementsOnToday(req,res,intent) {
+  console.log('GetTerminatedAgreementsOnToday called ');
+	org.apexRest({oauth:intent.oauth, uri:'GetTerminatedAgreementsOnToday',method:'GET'}, 
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured getting number of Expired Agreements Today: '+err);
+		  send_alexa_error(res,'An error occured getting number of Terminated Agreements Today: '+err);
 		}else{	
 			console.log(result);	
-			send_alexa_response(res, result+' Agreements expired today', 'APTTUS', '...', 'ExpiredAgreementsToday', false);
+			send_alexa_response(res, result+' Agreements Terminated today', 'APTTUS', '...', 'TerminatedAgreementsToday', false);
 		}
 	});
 }
 
-function GetExpiredAgreementsFor(req,res,intent) {
-  	console.log('GetExpiredAgreementsFor called ');
+function GetTerminatedAgreementsFor(req,res,intent) {
+  	console.log('GetTerminatedAgreementsFor called ');
 	console.log("intent " + intent.slots);
 	console.log("intent " + intent.slots.account);
 	var accountName = intent.slots.account.value;
 	console.log("Account Name>>>>"+accountName);
 	
-	org.apexRest({oauth:intent.oauth, uri:'EchoExpireAgrementAccount',method:'POST',body:'{"accountName":"'+accountName+'"}'}, 
+	org.apexRest({oauth:intent.oauth, uri:'EchoTerminatedAgrementAccount',method:'POST',body:'{"accountName":"'+accountName+'"}'}, 
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured in fetching Expired Agreements for account '+err);
+		  send_alexa_error(res,'An error occured in fetching Terminated Agreements for account '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, accountName + ' has ' + result + ' Expired Agreements', 'APTTUS', '...', 'ExpiredAgreementsFor ', false);
+		  send_alexa_response(res, accountName + ' has ' + result + ' Terminated Agreements', 'APTTUS', '...', 'TerminatedAgreementsFor ', false);
 		}
 	});
 }
 
-function GetExpiredAgreementDetails(req,res,intent) {
-	console.log('GetExpiredAgreementDetails called ');
+function GetTerminatedAgreementDetails(req,res,intent) {
+	console.log('GetTerminatedAgreementDetails called ');
 	console.log("intent " + intent.slots);
 	console.log("intent " + intent.slots.account);
 	var accountName = intent.slots.account.value;
 	console.log("Account Name>>>>"+accountName);
 	
-	org.apexRest({oauth:intent.oauth, uri:'EchoExpireAgrementReason',method:'POST',body:'{"accountName":"'+accountName+'"}'}, 
+	org.apexRest({oauth:intent.oauth, uri:'EchoTerminatedAgrementReason',method:'POST',body:'{"accountName":"'+accountName+'"}'}, 
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured in fetching Expired Agreements for account '+err);
+		  send_alexa_error(res,'An error occured in fetching Terminated Agreements for account '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, accountName + ' has ' + result + ' expired agreements', 'APTTUS', '...', 'ExpiredAgreementDetails ', false);
+		  send_alexa_response(res, accountName + ' has ' + result + ' Terminated agreements', 'APTTUS', '...', 'TerminatedAgreementDetails ', false);
 		}
 	});
 }
