@@ -108,7 +108,7 @@ function GetExpiredAgreementsOnToday(req,res,intent) {
 		  send_alexa_error(res,'An error occured getting number of Expired Agreements Today: '+err);
 		}else{	
 			console.log(result);	
-			send_alexa_response(res, 'Number of Expired Agreements Today are '+ result, 'APTTUS', '...', 'EscalatedCases ', false);
+			send_alexa_response(res, result+' Agreements expired today', 'APTTUS', '...', 'ExpiredAgreementsToday', false);
 		}
 	});
 }
@@ -124,10 +124,10 @@ function GetExpiredAgreementsFor(req,res,intent) {
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured in getting number of Expired Agreements for account '+err);
+		  send_alexa_error(res,'An error occured in fetching Expired Agreements for account '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, accountName + ' has ' + result + ' Number of Expired Agreements', 'APTTUS', '...', 'EscalatedCases ', false);
+		  send_alexa_response(res, accountName + ' has ' + result + ' Expired Agreements', 'APTTUS', '...', 'ExpiredAgreementsFor ', false);
 		}
 	});
 }
@@ -143,10 +143,10 @@ function GetExpiredAgreementDetails(req,res,intent) {
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured in getting number of Expired Agreements for account '+err);
+		  send_alexa_error(res,'An error occured in fetching Expired Agreements for account '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, accountName + ' has ' + result + ' Number of Expired Agreements', 'APTTUS', '...', 'EscalatedCases ', false);
+		  send_alexa_response(res, accountName + ' has ' + result + ' expired agreements', 'APTTUS', '...', 'ExpiredAgreementDetails ', false);
 		}
 	});
 }
@@ -161,7 +161,7 @@ var server = app.listen(port, function () {
 
 /* UTILIY FUNCTIONS */
 function send_alexa_error(res,message) {
-	send_alexa_response(res, 'An error occured during that request.  Please see the app log.', 'APTTUS', 'Error', message, true);
+	send_alexa_response(res, 'An error occured during that request.  Please check the application log.', 'APTTUS', 'Error', message, true);
 }
 
 function send_alexa_response(res, speech, title, subtitle, content, endSession) {
@@ -184,9 +184,9 @@ function route_alexa_begin(req, res) {
    
    alexa.launchRequest(req.body);
    if(req.body.session == null || req.body.session.user == null || req.body.session.user.accessToken == null) {
-        send_alexa_response(res, 'Please log into Salesforce', 'APTTUS', 'Not Logged In', 'Error: Not Logged In', true);
+        send_alexa_response(res, 'Please log into APTTUS', 'APTTUS', 'Not Logged In', 'Error: Not Logged In', true);
    } else {
-   		send_alexa_response(res, 'Connected to Salesforce',  'APTTUS', 'Connection Attempt', 'Logged In (Single User)', false);
+   		send_alexa_response(res, 'Connected to APTTUS',  'APTTUS', 'Connection Attempt', 'Logged In (Single User)', false);
    }
    
    console.log('!----REQUEST SESSION--------!');
@@ -199,7 +199,7 @@ function route_alexa_begin(req, res) {
 function route_alexa_intent(req, res) {
 
    if(req.body.session == null || req.body.session.user == null || req.body.session.user.accessToken == null) {
-        send_alexa_response(res, 'Please log into Salesforce', 'APTTUS', 'Not Logged In', 'Error: Not Logged In', true);
+        send_alexa_response(res, 'Please log into APTTUS', 'APTTUS', 'Not Logged In', 'Error: Not Logged In', true);
    } else {
    	   intent = new alexa.intentRequest(req.body);
 	   intent.oauth = sfdc_amazon.splitToken(req.body.session.user.accessToken);
