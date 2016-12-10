@@ -63,6 +63,7 @@ intent_functions['GetTerminatedAgreements'] = GetTerminatedAgreements;
 intent_functions['GetTerminatedAgreementsOnToday'] = GetTerminatedAgreementsOnToday;
 intent_functions['GetTerminatedAgreementsFor'] = GetTerminatedAgreementsFor;
 intent_functions['GetTerminatedAgreementDetails'] = GetTerminatedAgreementDetails;
+intent_functions['ApplyDiscount'] = ApplyDiscount;
 
 function CreateFavoriteQuotes(req, res, intent) {	
 	console.log("intent " + intent.slots);
@@ -80,6 +81,21 @@ function CreateFavoriteQuotes(req, res, intent) {
 		}
 	});
 }
+
+function ApplyDiscount(req, res, intent) {	
+	
+	org.apexRest({oauth:intent.oauth, uri:'EchoApplyDiscount',method:'POST', body:'{"accountName":""}'},
+	function(err,result) {
+		if(err) {
+		  console.log(err);
+		  send_alexa_error(res,'An error occured while applying discount: '+err);
+		}else{	
+		send_alexa_response(res, 'Applied discount on quote for '+res.name , 'APTTUS', 'Apply Discount', 'Quote for', false);
+		}
+	});
+}
+
+
 
 function PleaseWait(req,res,intent) {
   send_alexa_response(res, 'Waiting', 'APTTUS', '...', 'Waiting', false);
