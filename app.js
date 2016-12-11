@@ -77,6 +77,7 @@ function CreateFavoriteQuotes(req, res, intent) {
 		  console.log(err);
 		  send_alexa_error(res,'An error occured while creating favorite quote: '+err);
 		}else{	
+			console.log(result);
 		send_alexa_response(res, 'Created Favorite Quote for '+post + 'Based on the history of quotes with this customer, it is advised to give 18 percent of discount on the grand total to increase the probability of quote acceptance. Should I go ahead and give this discount?', 'APTTUS', 'Create Favorite Quote', 'Quote for '+ post, false);
 		}
 	});
@@ -90,6 +91,7 @@ function ApplyDiscount(req, res, intent) {
 		  console.log(err);
 		  send_alexa_error(res,'An error occured while applying discount: '+err);
 		}else{	
+			
 		send_alexa_response(res, 'Applied discount on quote for '+res.name , 'APTTUS', 'Apply Discount', 'Quote for', false);
 		}
 	});
