@@ -4,7 +4,7 @@ var clientId = '';
 var clientSecret = '';
 var redirectURI = '';
 var API = process.env.API || 'v32.0';
-var oauth_timeout = process.env.oauth_timeout || 120000;
+var oauth_timeout = process.env.oauth_timeout || 480000;
 var DEBUG_ON = process.env.DEBUG_ON || true;
 
 /* REQUIRED PACKAGES */
