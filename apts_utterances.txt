@@ -1,3 +1,37 @@
-CreateFavoriteQuote create favorite quote
-CreateFavoriteQuote create my favorite quote
-CreateFavoriteQuote create my favorite quote and email it to me
+PleaseWait wait
+
+CreateFavoriteQuote create favorite quote for {Microsoft|account}
+CreateFavoriteQuote create favorite quote for {Fresh Foods Packaging|account}
+CreateFavoriteQuote create favorite quote for {Google|account}
+CreateFavoriteQuote create favorite quote for {Symantec|account}
+CreateFavoriteQuote create favorite quote for {aussiepost|account}
+CreateFavoriteQuote create favorite quote for {akamai|account}
+
+CreateFavoriteQuote create my favorite quote for {Microsoft|account}
+CreateFavoriteQuote create my favorite quote for {Fresh Foods Packaging|account}
+CreateFavoriteQuote create my favorite quote for {Google|account}
+CreateFavoriteQuote create my favorite quote for {Symantec|account}
+CreateFavoriteQuote create my favorite quote for {aussiepost|account}
+CreateFavoriteQuote create my favorite quote for {akamai|account}
+
+GetTerminatedAgreements get total number of Terminated agreements
+
+GetTerminatedAgreementsOnToday how many agreements got Terminated today
+GetTerminatedAgreementsOnToday total Terminated cases today
+GetTerminatedAgreementsOnToday how many Terminated today
+GetTerminatedAgreementsOnToday any escalation today
+GetTerminatedAgreementsOnToday any agreements got terminated today
+GetTerminatedAgreementsOnToday any terminations today
+
+GetTerminatedAgreementsFor do we have any for {akamai|account}
+GetTerminatedAgreementsFor do we have any for {Google|account}
+GetTerminatedAgreementsFor do we have any for {aussiepost|account}
+GetTerminatedAgreementsFor do we have any for {Microsoft|account}
+GetTerminatedAgreementsFor do we have any for {Fresh Foods Packaging|account}
+GetTerminatedAgreementsFor do we have any for {Symantec|account}
+
+GetTerminatedAgreementDetails what is the Termination Reason for  {akamai|account}
+GetTerminatedAgreementDetails what is the Termination Reason for {Google|account}
+GetTerminatedAgreementDetails what is the Termination Reason for {aussiepost|account}
+GetTerminatedAgreementDetails what is the Termination Reason for {Microsoft|account}
+GetTerminatedAgreementDetails what is the Termination Reason for {Symantec|account}
