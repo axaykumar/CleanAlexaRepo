@@ -80,13 +80,13 @@ function CreateFavoriteQuotes(req, res, intent) {
 		  console.log(result);
 		  let message = 'Created Favorite Quote for '+ post;
 		  if(result && result > 0){
-			message = message + 'Quote created for ' + result.name;
+			//message = message + 'Quote created for ' + result.Name;
 		  }
 		  send_alexa_response(res, message, 'APTTUS', 'Create Favorite Quote', 'Quote for '+ post, false);
 		}
 	});
 }
-/*
+
 function ApplyDiscountOnQuote(req, res, intent) {
 	console.log("intent " + intent.slots);
 	console.log("intent " + intent.slots.applyDiscount);
@@ -109,7 +109,7 @@ function ApplyDiscountOnQuote(req, res, intent) {
 	});
 }
 
-*/
+
 
 function PleaseWait(req,res,intent) {
   send_alexa_response(res, 'Waiting', 'APTTUS', '...', 'Waiting', false);
