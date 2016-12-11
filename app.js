@@ -63,7 +63,7 @@ intent_functions['GetTerminatedAgreements'] = GetTerminatedAgreements;
 intent_functions['GetTerminatedAgreementsOnToday'] = GetTerminatedAgreementsOnToday;
 intent_functions['GetTerminatedAgreementsFor'] = GetTerminatedAgreementsFor;
 intent_functions['GetTerminatedAgreementDetails'] = GetTerminatedAgreementDetails;
-intent_functions['ApplyDiscount'] = ApplyDiscount;
+intent_functions['ApplyDiscountOnQuote'] = ApplyDiscountOnQuote;
 
 function CreateFavoriteQuotes(req, res, intent) {	
 	console.log("intent " + intent.slots);
@@ -77,22 +77,33 @@ function CreateFavoriteQuotes(req, res, intent) {
 		  console.log(err);
 		  send_alexa_error(res,'An error occured while creating favorite quote: '+err);
 		}else{	
-			console.log(result);
-		send_alexa_response(res, 'Created Favorite Quote for '+post + 'Based on the history of quotes with this customer, it is advised to give 18 percent of discount on the grand total to increase the probability of quote acceptance. Should I go ahead and give this discount?', 'APTTUS', 'Create Favorite Quote', 'Quote for '+ post, false);
+		  console.log(result);
+		  let message = 'Created Favorite Quote for '+ post;
+		  if(result && result > 0){
+			message = message + '. Based on the history of quotes with this customer, it is advised to give ' + result + ' percent of discount on the grand total to increase the probability of quote acceptance. Should I go ahead and give this discount?';
+		  }
+		  send_alexa_response(res, message, 'APTTUS', 'Create Favorite Quote', 'Quote for '+ post, false);
 		}
 	});
 }
 
-function ApplyDiscount(req, res, intent) {	
+function ApplyDiscountOnQuote(req, res, intent) {
+	console.log("intent " + intent.slots);
+	console.log("intent " + intent.slots.applyDiscount);
+	var post = intent.slots.applyDiscount.value;
+	console.log("Account Name>>>>"+post);
 	
-	org.apexRest({oauth:intent.oauth, uri:'EchoApplyDiscount',method:'POST', body:'{"accountName":""}'},
+	org.apexRest({oauth:intent.oauth, uri:'EchoApplyDiscount',method:'POST', body:'{"applyDiscount":"'+post+'"}'},
 	function(err,result) {
 		if(err) {
 		  console.log(err);
 		  send_alexa_error(res,'An error occured while applying discount: '+err);
-		}else{	
-			
-		send_alexa_response(res, 'Applied discount on quote for '+res.name , 'APTTUS', 'Apply Discount', 'Quote for', false);
+		}else{
+		   let message = 'Applied discount on quote ';
+		    if(res.name != undefined || res.name != ''){
+		    	message = message + 'for ' + res.name;
+		    } 
+		   send_alexa_response(res, message , 'APTTUS', 'Apply Discount', 'Quote for', false);
 		}
 	});
 }
