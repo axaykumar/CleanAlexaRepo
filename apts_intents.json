@@ -1,9 +1,37 @@
 {
   "intents": [
-    
     {
-     "intent": "CreateFavoriteQuote",
+      "intent": "CreateFavoriteQuote",
+      "slots": [{
+          "name": "account",
+          "type": "LITERAL"
+        }]
+    },
+    {
+      "intent": "PleaseWait"
+    },
+    {
+      "intent": "GetTerminatedAgreements",
       "slots": []
+    },
+    {
+      "intent": "GetTerminatedAgreementsOnToday",
+      "slots": []
+    },
+       
+    {
+      "intent": "GetTerminatedAgreementsFor",
+      "slots": [{
+          "name": "account",
+          "type": "LITERAL"
+        }]
+    },
+    {
+      "intent": "GetTerminatedAgreementDetails",
+      "slots": [{
+          "name": "account",
+          "type": "LITERAL"
+        }]
     }
-    ]
+   ]
 }
