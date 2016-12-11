@@ -99,10 +99,11 @@ function ApplyDiscountOnQuote(req, res, intent) {
 		  console.log(err);
 		  send_alexa_error(res,'An error occured while applying discount: '+err);
 		}else{
-		   let message = 'Applied discount on quote ';
+		   var message = 'Applied discount on quote ';
 		    if(res.name != undefined || res.name != ''){
 		    	message = message + 'for ' + res.name;
 		    } 
+		   console.log('message : ' + message + ' name ' + res.name  );
 		   send_alexa_response(res, message , 'APTTUS', 'Apply Discount', 'Quote for', false);
 		}
 	});
