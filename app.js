@@ -192,14 +192,16 @@ function send_alexa_response(res, speech, title, subtitle, content, endSession) 
 function route_alexa_begin(req, res) {
    
    alexa.launchRequest(req.body);
+	 console.log('requestbody='+req.body);
    if(req.body.session == null || req.body.session.user == null || req.body.session.user.accessToken == null) {
         send_alexa_response(res, 'Please log into APTTUS', 'APTTUS', 'Not Logged In', 'Error: Not Logged In', true);
    } else {
    		send_alexa_response(res, 'Connected to APTTUS',  'APTTUS', 'Connection Attempt', 'Logged In (Single User)', false);
    }
-   
+   this.attributes['test2']= 0;
    console.log('!----REQUEST SESSION--------!');
    console.log(req.body.session);
+	console.log('res='+res);
    
 
 };
