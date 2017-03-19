@@ -38,7 +38,7 @@ var org = nforce.createConnection({
 /* SETUP ROUTES */
 
 app.get('/', function (req, res) {
-  res.jsonp({status: 'Apttus Alexa is ready and up'});
+  res.jsonp({status: 'Force.com Alexa is ready and up'});
 });
 
 app.post('/echo', function (req, res) {
@@ -53,7 +53,7 @@ app.post('/echo', function (req, res) {
   }
 });
 
-sfdc_amazon.addRoutes(app,oauth_timeout,true);
+sfdc_amazon.addRoutes(app, oauth_timeout, true);
 
 /* List of identifiable intent / actions that the route will respond to */
 var intent_functions = new Array();
@@ -65,14 +65,14 @@ function PleaseWait(req,res,intent) {
 
 function GetCriticalCases(req, res, intent) {
 
-	org.apexRest({oauth:intent.oauth, uri:'getCriticalClosedCasesCount',method:'GET'}, 
+	org.apexRest({oauth:intent.oauth, uri:'CaseControl',method:'GET'}, 
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured getting number of closed cases for today. '+err);
+		  send_alexa_error(res,'An error occured getting number of critical cases closed today. '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, result + ' critical cases were closed today', 'APTTUS', '...', 'GetCriticalCases', false);
+		  send_alexa_response(res, result + ' critical cases were closed today', 'Force.com', '...', 'GetCriticalCases', false);
 		}
 	});
 }
@@ -111,7 +111,7 @@ function route_alexa_begin(req, res) {
    if(req.body.session == null || req.body.session.user == null || req.body.session.user.accessToken == null) {
         send_alexa_response(res, 'Please log into APTTUS', 'APTTUS', 'Not Logged In', 'Error: Not Logged In', true);
    } else {
-   		send_alexa_response(res, 'Connected to APTTUS',  'APTTUS', 'Connection Attempt', 'Logged In (Single User)', false);
+   		send_alexa_response(res, 'Connected to Force.com',  'Force.com', 'Connection Attempt', 'Logged In (Single User)', false);
    }
    
    console.log('!----REQUEST SESSION--------!');
@@ -121,7 +121,7 @@ function route_alexa_begin(req, res) {
 function route_alexa_intent(req, res) {
 
    if(req.body.session == null || req.body.session.user == null || req.body.session.user.accessToken == null) {
-        send_alexa_response(res, 'Please log into APTTUS', 'APTTUS', 'Not Logged In', 'Error: Not Logged In', true);
+        send_alexa_response(res, 'Please log into Force.com', 'Force.com', 'Not Logged In', 'Error: Not Logged In', true);
    } else {
    	   intent = new alexa.intentRequest(req.body);
 	   intent.oauth = sfdc_amazon.splitToken(req.body.session.user.accessToken);
