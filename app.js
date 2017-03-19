@@ -18,6 +18,7 @@ var session = require('express-session');
 var app = express();
 var bodyParser = require("body-parser");
 app.use(bodyParser());
+app.use(session({secret: 'ssshhhhh'}));
 var sess;
 app.get('/',function(req,res){
     sess=req.session;
