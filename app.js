@@ -201,7 +201,7 @@ function route_alexa_begin(req, res) {
    
    console.log('!----REQUEST SESSION--------!');
    console.log(req.body.session);
-console.log('res='+res.body.session);
+//console.log('res='+res.body.session);
 	console.log('res='+res.body.toString());
    
 
