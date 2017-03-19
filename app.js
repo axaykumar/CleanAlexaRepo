@@ -14,10 +14,22 @@ var alexa = require('alexa-nodekit');
 
 //express for routing
 var express = require('express');
+var session = require('express-session');
 var app = express();
 var bodyParser = require("body-parser");
 app.use(bodyParser());
-
+var sess;
+app.get('/',function(req,res){
+    sess=req.session;
+    /*
+    * Here we have assign the 'session' to 'sess'.
+    * Now we can create any number of session variable we want.
+    * in PHP we do as $_SESSION['var name'].
+    * Here we do like this.
+    */
+    sess.email; // equivalent to $_SESSION['email'] in PHP.
+    sess.username; // equivalent to $_SESSION['username'] in PHP.
+});
 
 //convert OAuth requests to/from Salesforce to Amazon
 var sfdc_amazon = require('sfdc-oauth-amazon-express');
@@ -110,6 +122,9 @@ function GetTerminatedAgreements(req,res,intent) {
 
 function GetTerminatedAgreementsOnToday(req,res,intent) {
   console.log('GetTerminatedAgreementsOnToday called ');
+		ssn = req.session;
+
+	console.log('email='+ssn.email);
 	org.apexRest({oauth:intent.oauth, uri:'GetTerminatedAgreementsOnToday',method:'GET'}, 
 	function(err,result) {
 		if(err) {
@@ -203,6 +218,8 @@ function route_alexa_begin(req, res) {
    console.log(req.body.session);
 //console.log('res='+res.body.session);
 	console.log('res='+res.body.toString());
+	ssn = req.session;
+ssn.email='test email';
    
 
 };
