@@ -212,7 +212,7 @@ function route_alexa_intent(req, res) {
 
    if(req.body.session == null || req.body.session.user == null || req.body.session.user.accessToken == null) {
         send_alexa_response(res, 'Please log into Force', 'Force', 'Not Logged In', 'Error: Not Logged In', true);
-	   this.attributes['test'] = 0; 
+	  
    } else {
    	   intent = new alexa.intentRequest(req.body);
 	   intent.oauth = sfdc_amazon.splitToken(req.body.session.user.accessToken);
