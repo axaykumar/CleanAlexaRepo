@@ -69,6 +69,7 @@ var intent_functions = new Array();
 intent_functions['PleaseWait'] = PleaseWait;
 intent_functions['CreateFavoriteQuote'] = CreateFavoriteQuotes;
 intent_functions['GetOpportunityWonToday'] = GetOpportunityWonToday;
+intent_functions['GetCriticalCasesClosedToday'] = GetCriticalCasesClosedToday;
 
 function CreateFavoriteQuotes(req, res, intent) {	
 	console.log("intent " + intent.slots);
