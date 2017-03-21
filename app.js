@@ -100,16 +100,21 @@ function GetCaseForAccount(req, res, intent) {
 	var post = intent.slots.accountName.value;
 	console.log("Account Name>>>>"+post);
 	
-	org.apexRest({oauth:intent.oauth, uri:'EchoFavoriteQuote',method:'POST', body:'{"accountName":"'+post+'"}'},
+	org.apexRest({oauth:intent.oauth, uri:'CaseControl',method:'POST', body:'{"accountName":"'+post+'"}'},
 	function(err,result) {
 		if(err) {
 		  console.log(err);
 		  send_alexa_error(res,'An error occured while fetching case details: '+err);
 		}else{	
 		  console.log(result);
+		  let message = '';
 		  if(result ==='true')
 		  {
-		  let message = 'Yes we do have a case for '+ post;
+		  message = 'Yes we do have a case for '+ post;
+		  }
+		  else
+		  {
+		  message = 'Could not find any case for '+ post;
 		  }
 		  
 		  	  send_alexa_response(res, message, 'Case Summary', 'Case Details', 'Yes we do have a case for '+ post, false);
