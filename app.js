@@ -71,6 +71,7 @@ intent_functions['CreateFavoriteQuote'] = CreateFavoriteQuotes;
 intent_functions['GetOpportunityWonToday'] = GetOpportunityWonToday;
 intent_functions['GetCriticalCasesClosedToday'] = GetCriticalCasesClosedToday;
 intent_functions['GetCaseForAccount'] = GetCaseForAccount;
+intent_functions['GetLatestUpdateForCase'] = GetLatestUpdateForCase;
 
 function CreateFavoriteQuotes(req, res, intent) {	
 	console.log("intent " + intent.slots);
@@ -128,6 +129,20 @@ function GetCaseForAccount(req, res, intent) {
 
 function PleaseWait(req,res,intent) {
   send_alexa_response(res, 'Waiting', 'Salesforce', '...', 'Waiting', false);
+}
+
+function GetLatestUpdateForCase(req,res,intent) {
+  
+	org.apexRest({oauth:intent.oauth, uri:'CaseControlConversational',method:'GET'}, 
+	function(err,result) {
+		if(err) {
+		  console.log(err);
+		  send_alexa_error(res,'An error occured getting the latest update for this case: '+err);
+		}else{	
+		  console.log(result);	
+		  send_alexa_response(res, 'Here is the latest comment from this case. '+ result, 'Case Summary', 'Latest Update', 'Here is the latest comment from this case. '+ result, false);
+		}
+	});
 }
 
 function GetOpportunityWonToday(req,res,intent) {
