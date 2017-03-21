@@ -74,8 +74,8 @@ intent_functions['GetCaseForAccount'] = GetCaseForAccount;
 
 function CreateFavoriteQuotes(req, res, intent) {	
 	console.log("intent " + intent.slots);
-	console.log("intent " + intent.slots.account);
-	var post = intent.slots.account.value;
+	console.log("intent " + intent.slots.accountName);
+	var post = intent.slots.accountName.value;
 	console.log("Account Name>>>>"+post);
 	
 	org.apexRest({oauth:intent.oauth, uri:'EchoFavoriteQuote',method:'POST', body:'{"accountName":"'+post+'"}'},
@@ -97,7 +97,7 @@ function CreateFavoriteQuotes(req, res, intent) {
 function GetCaseForAccount(req, res, intent) {	
 	console.log("intent " + intent.slots);
 	console.log("intent " + intent.slots.accountName);
-	var post = intent.slots.account.value;
+	var post = intent.slots.accountName.value;
 	console.log("Account Name>>>>"+post);
 	
 	org.apexRest({oauth:intent.oauth, uri:'EchoFavoriteQuote',method:'POST', body:'{"accountName":"'+post+'"}'},
