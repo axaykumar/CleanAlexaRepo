@@ -93,6 +93,29 @@ function CreateFavoriteQuotes(req, res, intent) {
 	});
 }
 
+function GetCaseForAccount(req, res, intent) {	
+	console.log("intent " + intent.slots);
+	console.log("intent " + intent.slots.account);
+	var post = intent.slots.account.value;
+	console.log("Account Name>>>>"+post);
+	
+	org.apexRest({oauth:intent.oauth, uri:'EchoFavoriteQuote',method:'POST', body:'{"accountName":"'+post+'"}'},
+	function(err,result) {
+		if(err) {
+		  console.log(err);
+		  send_alexa_error(res,'An error occured while fetching case details: '+err);
+		}else{	
+		  console.log(result);
+		  if(result ==='true')
+		  {
+		  let message = 'Yes we do have a case for '+ post;
+		  }
+		  
+		  	  send_alexa_response(res, message, 'Case Summary', 'Case Details', 'Yes we do have a case for '+ post, false);
+		}
+	});
+}
+
 
 
 
