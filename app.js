@@ -96,7 +96,7 @@ function CreateFavoriteQuotes(req, res, intent) {
 
 function GetCaseForAccount(req, res, intent) {	
 	console.log("intent " + intent.slots);
-	console.log("intent " + intent.slots.account);
+	console.log("intent " + intent.slots.accountName);
 	var post = intent.slots.account.value;
 	console.log("Account Name>>>>"+post);
 	
