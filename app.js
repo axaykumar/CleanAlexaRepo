@@ -108,7 +108,7 @@ function GetCaseForAccount(req, res, intent) {
 		}else{	
 		  console.log(result);
 		  let message = '';
-		  if(result ==='true')
+		  if(result ===true)
 		  {
 		  message = 'Yes we do have a case for '+ post;
 		  }
