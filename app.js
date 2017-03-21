@@ -168,7 +168,7 @@ function GetCriticalCasesClosedToday(req,res,intent) {
 		  send_alexa_error(res,'An error occured getting the total number of cases closed today: '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res,  result + ' cases with severity Cirtical were closed today.', 'Case Summary', 'Total Closed Cases', result +' critical cases were closed today.', false);
+		  send_alexa_response(res,  result + ' cases with severity Critical were closed today.', 'Case Summary', 'Total Closed Cases', result +' critical cases were closed today.', false);
 		}
 	});
 }
