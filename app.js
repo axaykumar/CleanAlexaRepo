@@ -14,23 +14,9 @@ var alexa = require('alexa-nodekit');
 
 //express for routing
 var express = require('express');
-var session = require('express-session');
 var app = express();
 var bodyParser = require("body-parser");
 app.use(bodyParser());
-app.use(session({secret: 'ssshhhhh'}));
-var sess;
-app.get('/',function(req,res){
-    sess=req.session;
-    /*
-    * Here we have assign the 'session' to 'sess'.
-    * Now we can create any number of session variable we want.
-    * in PHP we do as $_SESSION['var name'].
-    * Here we do like this.
-    */
-    sess.email; // equivalent to $_SESSION['email'] in PHP.
-    sess.username; // equivalent to $_SESSION['username'] in PHP.
-});
 
 //convert OAuth requests to/from Salesforce to Amazon
 var sfdc_amazon = require('sfdc-oauth-amazon-express');
@@ -68,14 +54,21 @@ app.post('/echo', function (req, res) {
 
 sfdc_amazon.addRoutes(app,oauth_timeout,true);
 
+//setup actual server
+var server = app.listen(port, function () {
+  console.log('Salesforce Case Echo running on '+port);
+  require('dns').lookup(require('os').hostname(), function (err, add, fam) {
+    console.log('addr: '+add);
+  });
+});
+
+
+
 /* List of identifiable intent / actions that the route will respond to */
 var intent_functions = new Array();
 intent_functions['PleaseWait'] = PleaseWait;
 intent_functions['CreateFavoriteQuote'] = CreateFavoriteQuotes;
-intent_functions['GetTerminatedAgreements'] = GetTerminatedAgreements;
-intent_functions['GetTerminatedAgreementsOnToday'] = GetTerminatedAgreementsOnToday;
-intent_functions['GetTerminatedAgreementsFor'] = GetTerminatedAgreementsFor;
-intent_functions['GetTerminatedAgreementDetails'] = GetTerminatedAgreementDetails;
+intent_functions['GetOpportunityWonToday'] = GetOpportunityWonToday;
 
 function CreateFavoriteQuotes(req, res, intent) {	
 	console.log("intent " + intent.slots);
@@ -104,85 +97,23 @@ function CreateFavoriteQuotes(req, res, intent) {
 
 
 function PleaseWait(req,res,intent) {
-  send_alexa_response(res, 'Waiting', 'APTTUS', '...', 'Waiting', false);
+  send_alexa_response(res, 'Waiting', 'Salesforce', '...', 'Waiting', false);
 }
 
-function GetTerminatedAgreements(req,res,intent) {
-  console.log('GetTerminatedAgreements called ');
-	org.apexRest({oauth:intent.oauth, uri:'GetTerminatedAgreements',method:'GET'}, 
+function GetOpportunityWonToday(req,res,intent) {
+  
+	org.apexRest({oauth:intent.oauth, uri:'OpportunityControlREST',method:'GET'}, 
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured getting number of Terminated agreement: '+err);
+		  send_alexa_error(res,'An error occured getting the total amount of opportunities closed today: '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, 'Number of Terminated agreements are '+ result, 'APTTUS', '...', 'TerminatedAgreements', false);
+		  send_alexa_response(res, 'We closed dollar '+ result, 'Opportunity Details', 'Total Closed-Won Opportunities', '$'+result, false);
 		}
 	});
 }
 
-function GetTerminatedAgreementsOnToday(req,res,intent) {
-  console.log('GetTerminatedAgreementsOnToday called ');
-		ssn = req.session;
-
-	console.log('email='+ssn.email);
-	org.apexRest({oauth:intent.oauth, uri:'GetTerminatedAgreementsOnToday',method:'GET'}, 
-	function(err,result) {
-		if(err) {
-		  console.log(err);
-		  send_alexa_error(res,'An error occured getting number of Terminated Agreements Today: '+err);
-		}else{	
-			console.log(result);	
-			send_alexa_response(res, result+' Agreements Terminated today', 'APTTUS', '...', 'TerminatedAgreementsToday', false);
-		}
-	});
-}
-
-function GetTerminatedAgreementsFor(req,res,intent) {
-  	console.log('GetTerminatedAgreementsFor called ');
-	console.log("intent " + intent.slots);
-	console.log("intent " + intent.slots.account);
-	var accountName = intent.slots.account.value;
-	console.log("Account Name>>>>"+accountName);
-	
-	org.apexRest({oauth:intent.oauth, uri:'EchoTerminatedAgrementAccount',method:'POST',body:'{"accountName":"'+accountName+'"}'}, 
-	function(err,result) {
-		if(err) {
-		  console.log(err);
-		  send_alexa_error(res,'An error occured in fetching Terminated Agreements for account '+err);
-		}else{	
-		  console.log(result);	
-		  send_alexa_response(res, accountName + ' has ' + result + ' Terminated Agreement for today', 'APTTUS', '...', 'TerminatedAgreementsFor ', false);
-		}
-	});
-}
-
-function GetTerminatedAgreementDetails(req,res,intent) {
-	console.log('GetTerminatedAgreementDetails called ');
-	console.log("intent " + intent.slots);
-	console.log("intent " + intent.slots.account);
-	var accountName = intent.slots.account.value;
-	console.log("Account Name>>>>"+accountName);
-	
-	org.apexRest({oauth:intent.oauth, uri:'EchoTerminatedAgrementReason',method:'POST',body:'{"accountName":"'+accountName+'"}'}, 
-	function(err,result) {
-		if(err) {
-		  console.log(err);
-		  send_alexa_error(res,'An error occured in fetching Terminated Agreements for account '+err);
-		}else{	
-		  console.log(result);	
-		  send_alexa_response(res, accountName + ' has ' + result , 'APTTUS', '...', 'TerminatedAgreementDetails ', false);
-		}
-	});
-}
-
-//setup actual server
-var server = app.listen(port, function () {
-  console.log('Salesforce Case Echo running on '+port);
-  require('dns').lookup(require('os').hostname(), function (err, add, fam) {
-    console.log('addr: '+add);
-  });
-});
 
 /* UTILIY FUNCTIONS */
 function send_alexa_error(res,message) {
@@ -209,15 +140,14 @@ function route_alexa_begin(req, res) {
    
 //   alexa.launchRequest(req.body);
    if(req.body.session == null || req.body.session.user == null || req.body.session.user.accessToken == null) {
-        send_alexa_response(res, 'Please log into APTTUS', 'APTTUS', 'Not Logged In', 'Error: Not Logged In', true);
+        send_alexa_response(res, 'Please log into Salesforce', 'Salesforce', 'Not Logged In', 'Error: Not Logged In', true);
    } else {
-   		send_alexa_response(res, 'Connected to test',  'test', 'Connection Attempt', 'Logged In (Single User)', false);
+   		send_alexa_response(res, 'Connected to Salesforce',  'Connectedt to Salesforce', 'Connection Attempt', 'Logged In (Single User)', false);
    }
    
    console.log('!----REQUEST SESSION--------!');
    console.log(req.body.session);
-	ssn = req.session;
-ssn.email='test email';
+
    
 
 };
@@ -226,7 +156,7 @@ ssn.email='test email';
 function route_alexa_intent(req, res) {
 
    if(req.body.session == null || req.body.session.user == null || req.body.session.user.accessToken == null) {
-        send_alexa_response(res, 'Please log into Force', 'Force', 'Not Logged In', 'Error: Not Logged In', true);
+        send_alexa_response(res, 'Please log into Salesforce', 'Salesforce', 'Not Logged In', 'Error: Not Logged In', true);
 	  
    } else {
    	   intent = new alexa.intentRequest(req.body);
