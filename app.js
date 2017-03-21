@@ -114,6 +114,20 @@ function GetOpportunityWonToday(req,res,intent) {
 	});
 }
 
+function GetCriticalCasesClosedToday(req,res,intent) {
+  
+	org.apexRest({oauth:intent.oauth, uri:'CaseControl',method:'GET'}, 
+	function(err,result) {
+		if(err) {
+		  console.log(err);
+		  send_alexa_error(res,'An error occured getting the total number of cases closed today: '+err);
+		}else{	
+		  console.log(result);	
+		  send_alexa_response(res,  result + ' cases with severity Cirtical were closed today.', 'Case Summary', 'Total Closed Cases', result +' critical cases were closed today.', false);
+		}
+	});
+}
+
 
 /* UTILIY FUNCTIONS */
 function send_alexa_error(res,message) {
