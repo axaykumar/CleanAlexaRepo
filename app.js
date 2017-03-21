@@ -118,7 +118,7 @@ function GetCaseForAccount(req, res, intent) {
 		  message = 'Could not find any case for '+ post;
 		  }
 		  
-		  	  send_alexa_response(res, message, 'Case Summary', 'Case Details', 'Yes we do have a case for '+ post, false);
+		  	  send_alexa_response(res, message, 'Case Summary', 'Case Details', 'Yes we do have a critical case for '+ post + ' and it was closed today.', false);
 		}
 	});
 }
