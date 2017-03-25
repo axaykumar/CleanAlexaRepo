@@ -166,10 +166,10 @@ function GetOpportunityWonToday(req,res,intent) {
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured getting the total amount of opportunities closed today: '+err);
+		  send_alexa_error(res,'An error occured getting the total amount of opportunities won today: '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, 'We closed dollar '+ result +' worth of opportunities today.', 'Opportunity Details', 'Total Closed-Won Opportunities', 'We closed $'+ result +' worth of opportunities today.', true);
+		  send_alexa_response(res, 'We won dollar '+ result +' worth of opportunities today.', 'Opportunity Details', 'Total Closed-Won Opportunities', 'We closed $'+ result +' worth of opportunities today.', true);
 		}
 	});
 }
