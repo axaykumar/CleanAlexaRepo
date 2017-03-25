@@ -72,6 +72,7 @@ intent_functions['GetOpportunityWonToday'] = GetOpportunityWonToday;
 intent_functions['GetCriticalCasesClosedToday'] = GetCriticalCasesClosedToday;
 intent_functions['GetCaseForAccount'] = GetCaseForAccount;
 intent_functions['GetLatestUpdateForCase'] = GetLatestUpdateForCase;
+intent_functions['CaseFollowUp'] = PostCaseFollowUp;
 
 function CreateFavoriteQuotes(req, res, intent) {	
 	console.log("intent " + intent.slots);
@@ -145,6 +146,20 @@ function GetLatestUpdateForCase(req,res,intent) {
 	});
 }
 
+function PostCaseFollowUp(req,res,intent) {
+  
+	org.apexRest({oauth:intent.oauth, uri:'CaseControlFollowup',method:'POST  '}, 
+	function(err,result) {
+		if(err) {
+		  console.log(err);
+		  send_alexa_error(res,'An error occured getting the latest update for this case: '+err);
+		}else{	
+		  console.log(result);	
+		  send_alexa_response(res, 'Here is the latest comment from this case. '+ result, 'Case Summary', 'Latest Update', 'Here is the latest comment from this case. '+ result, false);
+		}
+	});
+}
+
 function GetOpportunityWonToday(req,res,intent) {
   
 	org.apexRest({oauth:intent.oauth, uri:'OpportunityControlREST',method:'GET'}, 
@@ -154,7 +169,7 @@ function GetOpportunityWonToday(req,res,intent) {
 		  send_alexa_error(res,'An error occured getting the total amount of opportunities closed today: '+err);
 		}else{	
 		  console.log(result);	
-		  send_alexa_response(res, 'We closed dollar '+ result +' worth of opportunities today.', 'Opportunity Details', 'Total Closed-Won Opportunities', 'We closed $'+ result +' worth of opportunities today.', false);
+		  send_alexa_response(res, 'We closed dollar '+ result +' worth of opportunities today.', 'Opportunity Details', 'Total Closed-Won Opportunities', 'We closed $'+ result +' worth of opportunities today.', true);
 		}
 	});
 }
