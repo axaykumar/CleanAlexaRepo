@@ -67,34 +67,26 @@ var server = app.listen(port, function () {
 /* List of identifiable intent / actions that the route will respond to */
 var intent_functions = new Array();
 intent_functions['PleaseWait'] = PleaseWait;
-intent_functions['CreateFavoriteQuote'] = CreateFavoriteQuotes;
 intent_functions['GetOpportunityWonToday'] = GetOpportunityWonToday;
 intent_functions['GetCriticalCasesClosedToday'] = GetCriticalCasesClosedToday;
 intent_functions['GetCaseForAccount'] = GetCaseForAccount;
 intent_functions['GetLatestUpdateForCase'] = GetLatestUpdateForCase;
 intent_functions['CaseFollowUp'] = PostCaseFollowUp;
 
-function CreateFavoriteQuotes(req, res, intent) {	
-	console.log("intent " + intent.slots);
-	console.log("intent " + intent.slots.accountName);
-	var post = intent.slots.accountName.value;
-	console.log("Account Name>>>>"+post);
-	
-	org.apexRest({oauth:intent.oauth, uri:'EchoFavoriteQuote',method:'POST', body:'{"accountName":"'+post+'"}'},
+function GetOpportunityWonToday(req,res,intent) {
+  
+	org.apexRest({oauth:intent.oauth, uri:'OpportunityControlREST',method:'GET'}, 
 	function(err,result) {
 		if(err) {
 		  console.log(err);
-		  send_alexa_error(res,'An error occured while creating favorite quote: '+err);
+		  send_alexa_error(res,'An error occured getting the total amount of opportunities won today: '+err);
 		}else{	
-		  console.log(result);
-		  let message = 'Created Favorite Quote for '+ post;
-		  if(result && result > 0){
-			//message = message + 'Quote created for ' + result.Name;
-		  }
-		  send_alexa_response(res, message, 'APTTUS', 'Create Favorite Quote', 'Quote for '+ post, false);
+		  console.log(result);	
+		  send_alexa_response(res, 'We won dollar '+ result +' worth of opportunities today.', 'Opportunity Details', 'Total Closed-Won Opportunities', 'We closed $'+ result +' worth of opportunities today.', true);
 		}
 	});
 }
+
 
 function GetCaseForAccount(req, res, intent) {	
 	console.log("intent " + intent.slots);
@@ -160,19 +152,6 @@ function PostCaseFollowUp(req,res,intent) {
 	});
 }
 
-function GetOpportunityWonToday(req,res,intent) {
-  
-	org.apexRest({oauth:intent.oauth, uri:'OpportunityControlREST',method:'GET'}, 
-	function(err,result) {
-		if(err) {
-		  console.log(err);
-		  send_alexa_error(res,'An error occured getting the total amount of opportunities won today: '+err);
-		}else{	
-		  console.log(result);	
-		  send_alexa_response(res, 'We won dollar '+ result +' worth of opportunities today.', 'Opportunity Details', 'Total Closed-Won Opportunities', 'We closed $'+ result +' worth of opportunities today.', true);
-		}
-	});
-}
 
 function GetCriticalCasesClosedToday(req,res,intent) {
   
